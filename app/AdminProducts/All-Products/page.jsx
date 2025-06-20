@@ -32,7 +32,7 @@ const AllProductsPage = () => {
         try {
             const res = await axios.delete(`/api/delete/${id}`);
             if (res.data.success) {
-                setProducts(products.filter((product) => product._id !== id));
+                setProducts(product.filter((product) => product._id !== id));
             }
         } catch (err) {
             console.error("Error deleting product:", err);

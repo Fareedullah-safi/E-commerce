@@ -17,7 +17,7 @@ const PopularProductsPage = () => {
         const fetchProducts = async () => {
             try {
                 const res = await axios.get('/api/allproducts');
-                console.log(res)
+                console.log(res.data.products)
                 setProducts(res.data.products)
             } catch (error) {
                 console.log(error);
@@ -81,7 +81,7 @@ const PopularProductsPage = () => {
                             <div className="flex items-center justify-between">
                                 <p className='text-xl font-bold text-slate-900'>{product.price}</p>
                                 <button className="px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white text-sm font-medium rounded-lg transition-colors duration-200 hover:shadow-lg">
-                                    Add to Cart
+                                    Buy Now
                                 </button>
                             </div>
                         </div>

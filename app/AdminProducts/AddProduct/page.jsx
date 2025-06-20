@@ -5,7 +5,7 @@ import { FiUpload } from 'react-icons/fi';
 import axios from 'axios';
 
 const Page = () => {
-    const [form, setForm] = useState({
+    const [Product, setProduct] = useState({
         title: '',
         description: '',
         rating: '',
@@ -26,7 +26,7 @@ const Page = () => {
 
         if (name === 'price') {
             const raw = value.replace(/[^0-9.]/g, '');
-            setForm((prev) => ({
+            setProduct((prev) => ({
                 ...prev,
                 price: `$${raw}`,
             }));
@@ -34,7 +34,7 @@ const Page = () => {
         }
 
         if (name === 'imageUrl') {
-            setForm((prev) => ({
+            setProduct((prev) => ({
                 ...prev,
                 imageUrl: value,
                 image: value,
@@ -48,14 +48,14 @@ const Page = () => {
             if (file) {
                 const localUrl = URL.createObjectURL(file);
                 setImage(localUrl);
-                setForm((prev) => ({
+                setProduct((prev) => ({
                     ...prev,
                     image: file.name,
                     imageUrl: '',
                 }));
             }
         } else {
-            setForm((prev) => ({
+            setProduct((prev) => ({
                 ...prev,
                 [name]: value,
             }));
@@ -64,14 +64,11 @@ const Page = () => {
 
     const handleSubmit = async () => {
         try {
-            const data = {
-                ...form,
-            };
-            const res = await axios.post('/api/addproducts', data);
+            const res = await axios.post('/api/addproducts', Product);
             console.log(res)
             if (res.data.success) {
                 alert('Product added successfully!');
-                setForm({
+                setProduct({
                     title: '',
                     description: '',
                     rating: '',
@@ -102,7 +99,7 @@ const Page = () => {
                             <label className="block text-sm font-medium mb-2">Product Title</label>
                             <input
                                 name="title"
-                                value={form.title}
+                                value={Product.title}
                                 onChange={handleChange}
                                 type="text"
                                 className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-green-500"
@@ -115,7 +112,7 @@ const Page = () => {
                             <label className="block text-sm font-medium mb-2">Description</label>
                             <textarea
                                 name="description"
-                                value={form.description}
+                                value={Product.description}
                                 onChange={handleChange}
                                 rows={4}
                                 className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-green-500"
@@ -132,7 +129,7 @@ const Page = () => {
                                     name="image"
                                     accept="image/*"
                                     onChange={handleChange}
-                                    disabled={form.imageUrl !== ''}
+                                    disabled={Product.imageUrl !== ''}
                                     className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                                 />
                                 {image ? (
@@ -147,11 +144,11 @@ const Page = () => {
                             <input
                                 type="text"
                                 name="imageUrl"
-                                value={form.imageUrl}
+                                value={Product.imageUrl}
                                 onChange={handleChange}
                                 placeholder="Or paste an image URL (https://...)"
                                 className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-green-500"
-                                disabled={image && !form.imageUrl}
+                                disabled={image && !Product.imageUrl}
                             />
                         </div>
 
@@ -161,7 +158,7 @@ const Page = () => {
                                 <label className="block text-sm font-medium mb-2">Rating</label>
                                 <input
                                     name="rating"
-                                    value={form.rating}
+                                    value={Product.rating}
                                     onChange={handleChange}
                                     type="number"
                                     min="0"
@@ -175,7 +172,7 @@ const Page = () => {
                                 <label className="block text-sm font-medium mb-2">MarketPrice</label>
                                 <input
                                     name="MarketPrice"
-                                    value={form.MarketPrice}
+                                    value={Product.MarketPrice}
                                     onChange={handleChange}
                                     type="text"
                                     className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-green-500"
@@ -186,7 +183,7 @@ const Page = () => {
                                 <label className="block text-sm font-medium mb-2">OurPrice</label>
                                 <input
                                     name="OurPrice"
-                                    value={form.OurPrice}
+                                    value={Product.OurPrice}
                                     onChange={handleChange}
                                     type="text"
                                     className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-green-500"
@@ -207,7 +204,7 @@ const Page = () => {
                             <button
                                 type="button"
                                 onClick={() => {
-                                    setForm({
+                                    setProduct({
                                         title: '',
                                         description: '',
                                         rating: '',
@@ -219,7 +216,7 @@ const Page = () => {
                                 }}
                                 className="bg-gray-500 text-white px-6 py-3 rounded-lg hover:bg-gray-600 font-medium"
                             >
-                                Clear Form
+                                Clear Product
                             </button>
                         </div>
                     </form>

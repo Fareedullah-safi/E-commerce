@@ -7,17 +7,6 @@ export async function POST(req) {
         await connectDB();
 
         const body = await req.json();
-        const { id } = body;
-
-        // Check if the product with the same _id already exists
-        const existingProduct = await Product.findOne({ id });
-        if (existingProduct) {
-            return NextResponse.json(
-                { success: false, message: "Product already exists with this ID." },
-                { status: 409 }
-            );
-        }
-
         // Create the product
         const newProduct = await Product.create(body);
 
