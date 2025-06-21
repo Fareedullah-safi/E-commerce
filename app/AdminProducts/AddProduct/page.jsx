@@ -1,224 +1,156 @@
 'use client';
+
 import React, { useState } from 'react';
 import SideBar from '@/Conpunents/SideBar';
-import { FiUpload } from 'react-icons/fi';
 import axios from 'axios';
+import { z } from 'zod';
+import { toast, Toaster } from 'react-hot-toast';
+
+const productSchema = z.object({
+    id: z.string().min(1, 'Product ID is required'),
+    title: z.string().min(1, 'Title is required'),
+    description: z.string().min(1, 'Description is required'),
+    rating: z
+        .string()
+        .refine(val => !isNaN(Number(val)), 'Rating must be a number')
+        .transform(val => Number(val))
+        .refine(val => val >= 0 && val <= 5, {
+            message: 'Rating must be between 0 and 5',
+        }),
+    MarketPrice: z.string(),
+    OurPrice: z.string(),
+    imageUrl: z.string().url('Must be a valid URL').optional(),
+});
 
 const Page = () => {
-    const [Product, setProduct] = useState({
+    const [product, setProduct] = useState({
+        id: '',
         title: '',
         description: '',
         rating: '',
-        MarketPrice: '$',
-        OurPrice: '$',
-        image: '',
+        MarketPrice: '',
+        OurPrice: '',
         imageUrl: '',
     });
 
-    const [image, setImage] = useState('');
+    const [errors, setErrors] = useState({});
 
     const handleChange = (e) => {
-        const { name, value, type, files } = e.target;
-
-        if (name === 'rating') {
-            if (value > 5 || value < 0) return;
-        }
-
-        if (name === 'price') {
-            const raw = value.replace(/[^0-9.]/g, '');
-            setProduct((prev) => ({
-                ...prev,
-                price: `$${raw}`,
-            }));
-            return;
-        }
-
-        if (name === 'imageUrl') {
-            setProduct((prev) => ({
-                ...prev,
-                imageUrl: value,
-                image: value,
-            }));
-            setImage(value);
-            return;
-        }
-
-        if (type === 'file') {
-            const file = files[0];
-            if (file) {
-                const localUrl = URL.createObjectURL(file);
-                setImage(localUrl);
-                setProduct((prev) => ({
-                    ...prev,
-                    image: file.name,
-                    imageUrl: '',
-                }));
-            }
-        } else {
-            setProduct((prev) => ({
-                ...prev,
-                [name]: value,
-            }));
-        }
+        const { name, value } = e.target;
+        setProduct(prev => ({ ...prev, [name]: value }));
     };
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (e) => {
+        e.preventDefault();
         try {
-            const res = await axios.post('/api/addproducts', Product);
-            console.log(res)
-            if (res.data.success) {
-                alert('Product added successfully!');
+            setErrors({});
+            const validated = productSchema.parse(product);
+
+            const res = await axios.post('/api/addproducts', validated);
+
+            if (res.data.success === true) {
+                toast.success('Product added successfully!');
                 setProduct({
+                    id: '',
                     title: '',
                     description: '',
                     rating: '',
-                    MarketPrice: '$',
-                    OurPrice: '$',
-                    image: '',
+                    MarketPrice: '',
+                    OurPrice: '',
                     imageUrl: '',
                 });
-                setImage('');
             } else {
-                alert('Failed to add product.');
+                toast.error('Product not saved. Try again.');
             }
-        } catch (error) {
-            console.error('Error:', error);
-            alert('Server Error');
+
+        } catch (err) {
+            // 🟡 Zod validation errors
+            if (err.errors) {
+                const errorObj = {};
+                err.errors.forEach(e => {
+                    errorObj[e.path[0]] = e.message;
+                });
+                setErrors(errorObj);
+                toast.error('Please fix the form errors');
+            }
+            // 🔴 Axios error handling for 409 conflict
+            else if (err.response && err.response.status === 409) {
+                toast.error(err.response.data.message || 'ID already exists. Use a different one.');
+                setErrors(prev => ({ ...prev, id: 'This ID already exists. Choose a new one.' }));
+            }
+            else {
+                toast.error('Something went wrong. Try again later.');
+                console.error(err);
+            }
         }
     };
 
     return (
         <div className="flex">
             <SideBar />
+            <Toaster />
             <div className="flex-1 p-4 md:p-8 bg-gray-50 min-h-screen">
                 <div className="max-w-3xl mx-auto space-y-6">
                     <h1 className="text-3xl md:text-4xl font-bold text-green-600">Add Products</h1>
-                    <form className="space-y-6">
-                        {/* Title */}
-                        <div>
-                            <label className="block text-sm font-medium mb-2">Product Title</label>
-                            <input
-                                name="title"
-                                value={Product.title}
-                                onChange={handleChange}
-                                type="text"
-                                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-green-500"
-                                placeholder="Example: iPhone 14 Pro Max"
-                            />
-                        </div>
-
-                        {/* Description */}
-                        <div>
-                            <label className="block text-sm font-medium mb-2">Description</label>
-                            <textarea
-                                name="description"
-                                value={Product.description}
-                                onChange={handleChange}
-                                rows={4}
-                                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-green-500"
-                                placeholder="A16 chip, Pro camera system..."
-                            />
-                        </div>
-
-                        {/* Image Upload */}
-                        <div>
-                            <label className="block text-sm font-medium mb-2">Product Image (Upload or URL)</label>
-                            <div className="relative w-full border-2 border-dashed border-gray-300 rounded-xl p-4 hover:border-green-500 bg-white transition group mb-4">
-                                <input
-                                    type="file"
-                                    name="image"
-                                    accept="image/*"
-                                    onChange={handleChange}
-                                    disabled={Product.imageUrl !== ''}
-                                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                                />
-                                {image ? (
-                                    <img src={image} alt="Preview" className="mx-auto h-40 object-contain" />
-                                ) : (
-                                    <div className="text-center text-gray-500 flex flex-col items-center">
-                                        <FiUpload className="text-3xl mb-2" />
-                                        <p className="text-sm">Click or drag to upload (JPG, PNG)</p>
-                                    </div>
+                    <form className="space-y-6" onSubmit={handleSubmit}>
+                        {[
+                            { name: 'title', label: 'Product Title', type: 'text' },
+                            { name: 'id', label: 'Product ID', type: 'text' },
+                            { name: 'description', label: 'Description', type: 'textarea' },
+                            { name: 'rating', label: 'Rating', type: 'number', placeholder: '4.5' },
+                            { name: 'MarketPrice', label: 'Market Price', type: 'text', prefix: '$' },
+                            { name: 'OurPrice', label: 'Our Price', type: 'text', prefix: '$' },
+                            { name: 'imageUrl', label: 'Image URL', type: 'text' },
+                        ].map(({ name, label, type, placeholder, prefix }) => (
+                            <div key={name}>
+                                <label className="block text-sm font-medium mb-1">{label}</label>
+                                <div className="relative">
+                                    {prefix && (
+                                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
+                                            {prefix}
+                                        </span>
+                                    )}
+                                    {type === 'textarea' ? (
+                                        <textarea
+                                            name={name}
+                                            value={product[name]}
+                                            onChange={handleChange}
+                                            rows={3}
+                                            className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-green-500"
+                                        />
+                                    ) : (
+                                        <input
+                                                name={name}
+                                                value={product[name]}
+                                                onChange={handleChange}
+                                                type={type}
+                                                placeholder={placeholder || ''}
+                                                className={`w-full ${prefix ? 'pl-7' : 'p-3'} p-3 border rounded-lg focus:ring-2 focus:ring-green-500`}
+                                            />
+                                    )}
+                                </div>
+                                {errors[name] && (
+                                    <p className="text-red-500 text-sm">{errors[name]}</p>
                                 )}
                             </div>
-                            <input
-                                type="text"
-                                name="imageUrl"
-                                value={Product.imageUrl}
-                                onChange={handleChange}
-                                placeholder="Or paste an image URL (https://...)"
-                                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-green-500"
-                                disabled={image && !Product.imageUrl}
-                            />
-                        </div>
+                        ))}
 
-                        {/* Rating & Price */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <label className="block text-sm font-medium mb-2">Rating</label>
-                                <input
-                                    name="rating"
-                                    value={Product.rating}
-                                    onChange={handleChange}
-                                    type="number"
-                                    min="0"
-                                    max="5"
-                                    step="0.1"
-                                    className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-green-500"
-                                    placeholder="4.8"
+                        {product.imageUrl && (
+                            <div className="border rounded-lg overflow-hidden">
+                                <img
+                                    src={product.imageUrl}
+                                    alt="Preview"
+                                    className="w-full h-64 object-cover rounded-lg"
                                 />
                             </div>
-                            <div>
-                                <label className="block text-sm font-medium mb-2">MarketPrice</label>
-                                <input
-                                    name="MarketPrice"
-                                    value={Product.MarketPrice}
-                                    onChange={handleChange}
-                                    type="text"
-                                    className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-green-500"
-                                    placeholder="$999.99"
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium mb-2">OurPrice</label>
-                                <input
-                                    name="OurPrice"
-                                    value={Product.OurPrice}
-                                    onChange={handleChange}
-                                    type="text"
-                                    className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-green-500"
-                                    placeholder="$999.99"
-                                />
-                            </div>
-                        </div>
+                        )}
 
-                        {/* Buttons */}
-                        <div className="flex flex-col sm:flex-row gap-4">
-                            <button
-                                type="button"
-                                onClick={handleSubmit}
-                                className="bg-green-500 text-white px-6 py-3 rounded-lg hover:bg-green-600 font-medium"
-                            >
-                                Add Product
-                            </button>
-                            <button
-                                type="button"
-                                onClick={() => {
-                                    setProduct({
-                                        title: '',
-                                        description: '',
-                                        rating: '',
-                                        price: '$',
-                                        image: '',
-                                        imageUrl: '',
-                                    });
-                                    setImage('');
-                                }}
-                                className="bg-gray-500 text-white px-6 py-3 rounded-lg hover:bg-gray-600 font-medium"
-                            >
-                                Clear Product
-                            </button>
-                        </div>
+                        <button
+                            type="submit"
+                            className="bg-green-500 text-white px-6 py-3 rounded-lg hover:bg-green-600 font-medium"
+                        >
+                            Add Product
+                        </button>
                     </form>
                 </div>
             </div>

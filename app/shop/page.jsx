@@ -53,7 +53,7 @@ const PopularProductsPage = () => {
                                 />
                             </button>
                             <img
-                                src={product.image}
+                                src={product.imageUrl || null}
                                 className='w-full h-48 object-cover rounded-xl transition-transform duration-500 group-hover:scale-105 sm:w-auto'
                                 alt={product.name}
                             />

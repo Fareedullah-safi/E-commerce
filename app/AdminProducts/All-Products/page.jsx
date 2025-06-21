@@ -14,7 +14,6 @@ const AllProductsPage = () => {
         const fetchProducts = async () => {
             try {
                 const res = await axios.get('/api/allproducts');
-                console.log(res)
                 if (res.data.success) {
                     setProducts(res.data.products);
                 }
@@ -32,7 +31,7 @@ const AllProductsPage = () => {
         try {
             const res = await axios.delete(`/api/delete/${id}`);
             if (res.data.success) {
-                setProducts(product.filter((product) => product._id !== id));
+                setProducts(product.filter((p) => p._id !== id));
             }
         } catch (err) {
             console.error("Error deleting product:", err);
@@ -64,8 +63,8 @@ const AllProductsPage = () => {
                     <table className="min-w-full text-sm md:text-base">
                         <thead>
                             <tr className="bg-cyan-50 text-gray-800 uppercase tracking-wider text-xs md:text-sm">
-                                <th className="p-4 text-left">image</th>
-                                <th className="p-4 text-left">Tittle</th>
+                                <th className="p-4 text-left">Image</th>
+                                <th className="p-4 text-left">Title</th>
                                 <th className="p-4 text-left hidden lg:table-cell">Description</th>
                                 <th className="p-4 text-left">Rating</th>
                                 <th className="p-4 text-left">Price</th>
@@ -84,11 +83,17 @@ const AllProductsPage = () => {
                                 ) : product.map((product) => (
                                     <tr key={product._id} className="border-b hover:bg-gray-50 transition">
                                         <td className="p-4">
-                                            <img
-                                                src={product.image}
-                                                alt={product.title}
-                                                className="w-14 h-14 md:w-16 md:h-16 object-cover rounded-lg"
-                                            />
+                                            {product.image && product.image.trim() !== "" ? (
+                                                <img
+                                                    src={product.image}
+                                                    alt={product.title}
+                                                    className="w-14 h-14 md:w-16 md:h-16 object-cover rounded-lg"
+                                                />
+                                            ) : (
+                                                <div className="w-14 h-14 md:w-16 md:h-16 bg-gray-200 rounded-lg flex items-center justify-center text-gray-500 text-xs">
+                                                    No Image
+                                                </div>
+                                            )}
                                         </td>
                                         <td className="p-4 font-semibold text-gray-800">{product.title}</td>
                                         <td className="p-4 hidden lg:table-cell text-gray-500">
