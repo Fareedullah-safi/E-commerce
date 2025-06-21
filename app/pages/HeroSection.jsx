@@ -5,9 +5,10 @@ import Image from 'next/image';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination } from 'swiper/modules';
 import { FaArrowRight } from 'react-icons/fa';
-
 import 'swiper/css';
 import 'swiper/css/pagination';
+import Link from 'next/link';
+import toast, { Toaster } from 'react-hot-toast';
 
 const slides = [
     {
@@ -35,11 +36,14 @@ const slides = [
         image: '/images/Headphone.png',
     },
 ];
-
+const buyme = () => {
+    toast.success("Wait redirecting to Product page")
+}
 const HeroSlider = () => {
 
     return (
         <div className="px-3 xs:px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24 2xl:px-32 py-4 sm:py-6 md:py-8 lg:py-10">
+            <Toaster position='top-right' reverseOrder={false} />
             <Swiper
                 modules={[Autoplay, Pagination]}
                 autoplay={{ delay: 3000 }}
@@ -63,13 +67,21 @@ const HeroSlider = () => {
                                     {slide.title}
                                 </h1>
                                 <div className="flex flex-col xs:flex-row items-center xs:justify-center lg:justify-start gap-3 xs:gap-4 sm:gap-5">
-                                    <button className="w-full xs:w-auto px-6 xs:px-8 sm:px-10 md:px-12 py-2.5 xs:py-3 sm:py-3.5 bg-orange-600 hover:bg-orange-700 active:bg-orange-800 rounded-full text-white text-sm xs:text-base font-medium transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105 active:scale-95">
+
+                                    <button className="cursor-pointer w-full xs:w-auto px-6 xs:px-8 sm:px-10 md:px-12 py-2.5 xs:py-3 sm:py-3.5 bg-orange-600 hover:bg-orange-700 active:bg-orange-800 rounded-full text-white text-sm xs:text-base font-medium transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105 active:scale-95"
+                                        onClick={buyme}
+                                    >
+                                        < Link href="/shop" >
                                         {slide.button}
+                                        </Link>
                                     </button>
-                                    <button className="group flex items-center justify-center gap-2 px-3 xs:px-4 py-2 xs:py-2.5 font-medium text-gray-700 hover:text-orange-600 transition-colors duration-300 text-sm xs:text-base">
-                                        {slide.linkText}
-                                        <FaArrowRight className="text-xs xs:text-sm group-hover:translate-x-1 transition-transform duration-300" />
+                                    < Link href="/shop" >
+                                        <button className="cursor-pointer group text-2xl flex items-center justify-center gap-2 px-3 xs:px-4 py-2 xs:py-2.5 font-medium text-gray-700 hover:text-orange-600 transition-colors duration-300 text-sm xs:text-base"
+                                            onClick={buyme}
+                                        >
+                                            {slide.linkText} <FaArrowRight className="text-xs xs:text-sm group-hover:translate-x-1 transition-transform duration-300" />
                                     </button>
+                                    </Link>
                                 </div>
                             </div>
 

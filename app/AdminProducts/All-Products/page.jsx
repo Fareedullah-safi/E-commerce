@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import SideBar from '@/Conpunents/SideBar';
+import SideBar from '@/Components/SideBar';
 import { AiOutlineDelete } from 'react-icons/ai';
 import axios from 'axios';
 

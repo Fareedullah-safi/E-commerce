@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 
 export default function GamingLanding() {
     const [isHovered, setIsHovered] = useState(false)
@@ -24,11 +25,13 @@ export default function GamingLanding() {
                                 From immersive sound to precise controls—<br />
                                 everything you need to win
                             </p>
+                            <Link href="/shop">
                             <button
                                 className="bg-gradient-to-r cursor-pointer from-orange-500 to-red-500 text-white px-8 py-4 rounded-full text-lg font-semibold hover:from-orange-600 hover:to-red-600 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl"
                             >
                                 Buy now →
-                            </button>
+                                </button>
+                            </Link>
                         </div>
 
                         {/* Right Content - Gaming Image */}

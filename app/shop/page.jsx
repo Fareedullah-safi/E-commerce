@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { GoHeartFill } from "react-icons/go";
 import axios from 'axios';
-import Spinner from '@/Conpunents/Spinner';
+import Spinner from '@/Components/Spinner';
 const PopularProductsPage = () => {
     const [favorites, setFavorites] = useState({});
     const [Products, setProducts] = useState(null);

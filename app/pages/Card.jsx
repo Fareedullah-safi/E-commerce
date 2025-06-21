@@ -2,17 +2,33 @@
 import React, { useState } from 'react';
 import { GoHeartFill } from "react-icons/go";
 import { GiShoppingBag } from "react-icons/gi"
+import Link from 'next/link';
 import products from "../../Json/Card.json"
 import { FaArrowRight } from 'react-icons/fa';
+import MiniWhiteSpinner from '@/Components/MiniWhiteSpinner';
+import toast, { Toaster } from 'react-hot-toast';
 const ProductShowcase = () => {
     const [favorites, setFavorites] = useState({});
+    const [loading, setLoading] = useState(false);
+    // loading
+    const handleClick = () => {
+        setLoading(true);
+    };
+
+    // end loading
     const toggleFavorite = (id) => {
         setFavorites((prevFavorites) => ({
             ...prevFavorites, [id]: !prevFavorites[id]
         }));
     };
+    const buyme = () => {
+        toast.success("Wait redirecting to Product page")
+    }
     return (
         <main>
+            {/* 🟡 Toast container must be added once */}
+            <Toaster position="top-right" reverseOrder={false} />
+
             <h1 className="text-2xl md:text-3xl font-semibold pt-10 pb-4 px-4 md:px-8 lg:px-16 xl:px-24 2xl:px-32">
                 Popular Products
             </h1>
@@ -33,7 +49,7 @@ const ProductShowcase = () => {
                             </button>
                             <img
                                 src={product.image}
-                                className='w-full h-48 object-cover rounded-xl transition-transform duration-500 group-hover:scale-105 sm:w-auto'
+                                className='w-full h-auto object-cover rounded-xl transition-transform duration-500 group-hover:scale-105 sm:w-auto md:h-55'
                                 alt={product.name}
                             />
                         </div>
@@ -55,12 +71,12 @@ const ProductShowcase = () => {
                                         </span>
                                     ))}
                                 </div>
-                            </div>
-
-                            <div className="flex items-center justify-between">
+                            </div>                            <div className="flex items-center justify-between">
                                 <p className='text-xl font-bold text-slate-900'>{product.price}</p>
-                                <button className="px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white text-sm font-medium rounded-lg transition-colors duration-200 hover:shadow-lg">
-                                    Add to Cart
+                                <button className="cursor-pointer px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white text-sm font-medium rounded-lg transition-colors duration-200 hover:shadow-lg"
+                                    onClick={buyme}
+                                >
+                                    <Link href="/shop"> Buy Now </Link>
                                 </button>
                             </div>
                         </div>
@@ -69,9 +85,15 @@ const ProductShowcase = () => {
             </div>
 
             <div className="py-12 flex justify-center">
-                <button className="px-6 py-3 text-lg flex items-center gap-2 rounded-lg cursor-pointer bg-blue-500 hover:bg-blue-700 text-white">
-                    <GiShoppingBag /> Explore More Products <FaArrowRight />
-                </button>
+                <Link href="/shop">
+                    <button className="px-6 py-3 text-lg flex items-center gap-2 rounded-lg cursor-pointer bg-green-500 hover:bg-green-700 text-white"
+                        onClick={handleClick}
+                        disabled={loading}
+                    >
+
+                        {loading ? (<><GiShoppingBag />Explore More Products<MiniWhiteSpinner /></>) : (<><GiShoppingBag />Explore More Products<FaArrowRight /></>)}
+                    </button>
+                </Link>
             </div>
         </main>
     );
