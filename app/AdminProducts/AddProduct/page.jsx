@@ -97,7 +97,7 @@ const Page = () => {
                             { name: 'title', label: 'Product Title', type: 'text' },
                             { name: 'id', label: 'Product ID', type: 'text' },
                             { name: 'description', label: 'Description', type: 'textarea' },
-                            { name: 'rating', label: 'Rating', type: 'number', placeholder: '4.5' },
+                            { name: 'rating', label: 'Rating', type: 'text', placeholder: '4.5' },
                             { name: 'MarketPrice', label: 'Market Price', type: 'text', prefix: '$' },
                             { name: 'OurPrice', label: 'Our Price', type: 'text', prefix: '$' },
                             { name: 'imageUrl', label: 'Image URL', type: 'text' },
@@ -112,6 +112,7 @@ const Page = () => {
                                     )}
                                     {type === 'textarea' ? (
                                         <textarea
+                                            autoComplete='off'
                                             name={name}
                                             value={product[name]}
                                             onChange={handleChange}
@@ -119,7 +120,8 @@ const Page = () => {
                                             className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-green-500"
                                         />
                                     ) : (
-                                        <input
+                                            <input
+                                                autoComplete='off'
                                                 name={name}
                                                 value={product[name]}
                                                 onChange={handleChange}

@@ -80,7 +80,7 @@ const FeaturedProducts = () => {
                                 {/* Buy Now Button */}
                                 <Link href="/shop">
                                     <button
-                                        className="bg-orange-500 hover:bg-orange-600 active:bg-orange-700 text-white font-semibold py-2 sm:py-3 px-4 sm:px-6 rounded-md sm:rounded-lg text-sm sm:text-base transition-all duration-300 transform hover:scale-105 active:scale-95 flex items-center gap-1 sm:gap-2 self-start group-hover:shadow-lg"
+                                        className="cursor-pointer bg-orange-500 hover:bg-orange-600 active:bg-orange-700 text-white font-semibold py-2 sm:py-3 px-4 sm:px-6 rounded-md sm:rounded-lg text-sm sm:text-base transition-all duration-300 transform hover:scale-105 active:scale-95 flex items-center gap-1 sm:gap-2 self-start group-hover:shadow-lg"
                                         onClick={buyme}
                                     >
                                         Buy now <FaCartArrowDown />
