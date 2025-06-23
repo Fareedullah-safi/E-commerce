@@ -1,10 +1,9 @@
 import Product from "@/Models/Product";
 import connectDB from "@/DB/Db";
-import { NextRequest, NextResponse } from "next/server";
-import next from "next";
+import { NextResponse } from "next/server";
 
 export async function GET(req, { params }) {
-    const { id } = params
+    const { id } = await params
     try {
         await connectDB()
 
