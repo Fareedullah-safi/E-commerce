@@ -83,9 +83,9 @@ const AllProductsPage = () => {
                                 ) : product.map((product) => (
                                     <tr key={product._id} className="border-b hover:bg-gray-50 transition">
                                         <td className="p-4">
-                                            {product.image && product.image.trim() !== "" ? (
+                                            {product.imageUrl ? (
                                                 <img
-                                                    src={product.image}
+                                                    src={product.imageUrl}
                                                     alt={product.title}
                                                     className="w-14 h-14 md:w-16 md:h-16 object-cover rounded-lg"
                                                 />
