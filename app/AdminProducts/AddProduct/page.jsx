@@ -149,7 +149,7 @@ const Page = () => {
 
                         <button
                             type="submit"
-                            className="bg-green-500 text-white px-6 py-3 rounded-lg hover:bg-green-600 font-medium"
+                            className="cursor-pointer bg-green-500 text-white px-6 py-3 rounded-lg hover:bg-green-600 font-medium"
                         >
                             Add Product
                         </button>

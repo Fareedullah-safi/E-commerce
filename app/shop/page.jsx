@@ -86,7 +86,7 @@ const PopularProductsPage = () => {
                             <div className="flex items-center justify-between">
                                 <p className='text-xl font-bold text-slate-900'><span>$</span>{product.OurPrice}</p>
                                 <button className="px-4 py-2 cursor-pointer bg-slate-800 hover:bg-slate-900 text-white text-sm font-medium rounded-lg transition-colors duration-200 hover:shadow-lg">
-                                    <Link href='/shop/buynow'>
+                                    <Link href={`/shop/buynow/${product._id}`}>
                                         Buy Now
                                     </Link>
                                 </button>

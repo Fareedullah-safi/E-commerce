@@ -6,7 +6,7 @@ import { AiOutlineDelete } from 'react-icons/ai';
 import axios from 'axios';
 
 const AllProductsPage = () => {
-    const [product, setProducts] = useState([]);
+    const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [deletingId, setDeletingId] = useState(null);
 
@@ -31,7 +31,7 @@ const AllProductsPage = () => {
         try {
             const res = await axios.delete(`/api/delete/${id}`);
             if (res.data.success) {
-                setProducts(product.filter((p) => p._id !== id));
+                setProducts((prev) => prev.filter((p) => p._id !== id));
             }
         } catch (err) {
             console.error("Error deleting product:", err);
@@ -73,58 +73,60 @@ const AllProductsPage = () => {
                         </thead>
                         <tbody>
                             {loading
-                                ? Array.from({ length: 6 }).map(renderSkeletonRow)
-                                : product.length === 0 ? (
-                                    <tr>
-                                        <td colSpan={6} className="text-center text-gray-500 py-10">
-                                            No products found.
-                                        </td>
-                                    </tr>
-                                ) : product.map((product) => (
-                                    <tr key={product._id} className="border-b hover:bg-gray-50 transition">
-                                        <td className="p-4">
-                                            {product.imageUrl ? (
-                                                <img
-                                                    src={product.imageUrl}
-                                                    alt={product.title}
-                                                    className="w-14 h-14 md:w-16 md:h-16 object-cover rounded-lg"
-                                                />
-                                            ) : (
-                                                <div className="w-14 h-14 md:w-16 md:h-16 bg-gray-200 rounded-lg flex items-center justify-center text-gray-500 text-xs">
-                                                    No Image
-                                                </div>
-                                            )}
-                                        </td>
-                                        <td className="p-4 font-semibold text-gray-800">{product.title}</td>
-                                        <td className="p-4 hidden lg:table-cell text-gray-500">
-                                            {product.description.length > 50
-                                                ? product.description.slice(0, 50) + '...'
-                                                : product.description}
-                                        </td>
-                                        <td className="p-4">{product.rating} / 5</td>
-                                        <td className="p-4 text-green-600 font-medium">${product.price}</td>
-                                        <td className="p-4 text-center">
-                                            <button
-                                                onClick={() => handleDelete(product._id)}
-                                                disabled={deletingId === product._id}
-                                                className={`flex items-center justify-center gap-1 px-3 py-1 rounded-lg transition 
-                                                    ${deletingId === product._id
-                                                        ? 'bg-red-200 text-red-500 cursor-not-allowed'
-                                                        : 'bg-red-100 hover:bg-red-200 text-red-700'
-                                                    }`}
-                                            >
-                                                {deletingId === product._id ? (
-                                                    <span className="animate-pulse">Deleting...</span>
+                                ? Array(5).fill(0).map(renderSkeletonRow)
+                                : products.length === 0
+                                    ? (
+                                        <tr>
+                                            <td colSpan={6} className="text-center text-gray-500 py-10">
+                                                No products found.
+                                            </td>
+                                        </tr>
+                                    )
+                                    : products.map((product) => (
+                                        <tr key={product._id} className="border-b hover:bg-gray-50 transition">
+                                            <td className="p-4">
+                                                {product.imageUrl ? (
+                                                    <img
+                                                        src={product.imageUrl}
+                                                        alt={product.title}
+                                                        className="w-14 h-14 md:w-16 md:h-16 object-cover rounded-lg"
+                                                    />
                                                 ) : (
-                                                    <>
-                                                        <AiOutlineDelete className="text-lg" />
-                                                        <span className="hidden sm:inline">Delete</span>
-                                                    </>
+                                                    <div className="w-14 h-14 md:w-16 md:h-16 bg-gray-200 rounded-lg flex items-center justify-center text-gray-500 text-xs">
+                                                        No Image
+                                                    </div>
                                                 )}
-                                            </button>
-                                        </td>
-                                    </tr>
-                                ))}
+                                            </td>
+                                            <td className="p-4 font-semibold text-gray-800">{product.title}</td>
+                                            <td className="p-4 hidden lg:table-cell text-gray-500">
+                                                {product.description.length > 50
+                                                    ? product.description.slice(0, 50) + '...'
+                                                    : product.description}
+                                            </td>
+                                            <td className="p-4">{product.rating} / 5</td>
+                                            <td className="p-4 text-green-600 font-medium">${product.price}</td>
+                                            <td className="p-4 text-center">
+                                                <button
+                                                    onClick={() => handleDelete(product._id)}
+                                                    disabled={deletingId === product._id}
+                                                    className={`cursor-pointer flex items-center justify-center gap-1 px-3 py-1 rounded-lg transition 
+                                                        ${deletingId === product._id
+                                                            ? 'bg-red-200 text-red-500 cursor-not-allowed'
+                                                            : 'bg-red-100 hover:bg-red-200 text-red-700'
+                                                        }`}
+                                                >
+                                                    {deletingId === product._id ? (
+                                                        <span className="animate-pulse">Deleting...</span>
+                                                    ) : (
+                                                        <>
+                                                            <AiOutlineDelete className="text-lg" />
+                                                            <span className="hidden sm:inline cursor-pointer">Delete</span>
+                                                        </>
+                                                    )}
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))}
                         </tbody>
                     </table>
                 </div>
