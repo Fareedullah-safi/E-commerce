@@ -2,8 +2,27 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import addressIllustration from "@/public/images/address.svg";
+import { useState } from "react";
 
 export default function AddAddressForm() {
+    cosnt[Adress, setAdress] = useState([])
+
+    const handleChange = (e) => {
+        const name = e.name;
+        const value = e.value;
+        console.log(name, value)
+    }
+    const handleSubmit = () => {
+
+    }
+
+
+
+
+
+
+
+
     return (
         <main className="min-h-screen bg-white flex flex-col md:flex-row items-center justify-center p-6 gap-10">
             {/* Form Section */}
@@ -16,34 +35,46 @@ export default function AddAddressForm() {
                 <h1 className="text-3xl font-semibold text-gray-700 mb-8">
                     Add Shipping <span className="text-orange-600 font-bold">Address</span>
                 </h1>
-                <form className="space-y-4">
+                <form className="space-y-4" onSubmit={handleChange}>
                     <input
                         type="text"
+                        name="userName"
+                        onChange={handeChange}
                         placeholder="Full name"
                         className="w-full border border-gray-300 rounded-md p-3 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
                     />
                     <input
-                        type="text"
+                        type="number"
+                        name="PhoneNumber"
+                        onChange={handeChange}
                         placeholder="Phone number"
                         className="w-full border border-gray-300 rounded-md p-3 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
                     />
                     <input
-                        type="text"
+                        type="number"
+                        name="PinCode"
+                        onChange={handeChange}
                         placeholder="Pin code"
                         className="w-full border border-gray-300 rounded-md p-3 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
                     />
                     <textarea
+                        name="StreetAdress"
+                        onChange={handeChange}
                         placeholder="Address (Area and Street)"
                         className="w-full border border-gray-300 rounded-md p-3 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
                     />
                     <div className="flex gap-4">
                         <input
+                            name="CityAdress"
                             type="text"
+                            onChange={handeChange}
                             placeholder="City/District/Town"
                             className="flex-1 border border-gray-300 rounded-md p-3 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
                         />
                         <input
+                            name="StateAdress"
                             type="text"
+                            onChange={handeChange}
                             placeholder="State"
                             className="flex-1 border border-gray-300 rounded-md p-3 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
                         />
