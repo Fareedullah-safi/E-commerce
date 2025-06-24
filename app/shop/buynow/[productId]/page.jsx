@@ -5,6 +5,8 @@ import React, { useEffect, useState } from 'react';
 import { FaStar } from 'react-icons/fa';
 import axios from 'axios';
 import Spinner from '@/Components/Spinner';
+import toast, { Toaster } from 'react-hot-toast';
+import Link from 'next/link';
 
 const ProductPage = () => {
     const params = useParams();
@@ -29,9 +31,27 @@ const ProductPage = () => {
     if (!product) {
         return <Spinner />;
     }
+    // sending data to db in buyme card
+    const handleClick = async () => {
+        try {
+            const res = await axios.post("/api/addtocard", product)
+            const errorHandle = res.data.status
+            console.log(errorHandle)
+            if (errorHandle === 201) {
+                toast.success("Product Added to cart")
+            }
+            if (errorHandle === 409) {
+                toast.error("Product already exists in your cart");
+            }
+        } catch (error) {
+            console.log(error)
+            console.error("Something went wrong while adding to cart")
+        }
+    }
 
     return (
         <div className="max-w-7xl mx-auto p-4 sm:p-6 md:p-8 bg-white">
+            <Toaster position="top-right" reverseOrder={false} />
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
 
                 {/* Left - Image */}
@@ -86,15 +106,21 @@ const ProductPage = () => {
                             <span className="text-gray-500">Earphone</span>
                         </div>
                     </div>
-
-                    <div className="flex space-x-4 pt-4">
-                        <button className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-3 px-6 rounded-xl shadow-sm transition-all transform hover:scale-105 active:scale-95">
+                    <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 pt-4">
+                        <button
+                            className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-3 px-6 rounded-xl shadow-sm transition-all transform hover:scale-105 active:scale-95"
+                            onClick={handleClick}
+                        >
                             Add to Cart
                         </button>
-                        <button className="flex-1 bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 px-6 rounded-xl shadow-lg transition-all transform hover:scale-105 active:scale-95">
-                            Buy Now
+                        <button className="flex-1 bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 px-6 rounded-xl shadow-lg transition-all transform hover:scale-105 active:scale-95"
+                        >
+                            <Link href={"/card"}>
+                                Buy Now
+                            </Link>
                         </button>
                     </div>
+
                 </div>
             </div>
         </div>
