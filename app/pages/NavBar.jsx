@@ -1,10 +1,10 @@
 'use client';
-
 import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FaUserCircle, FaBars, FaTimes } from 'react-icons/fa';
 import { HiShoppingCart } from "react-icons/hi2";
+import { SignedIn, SignedOut, UserButton, SignInButton } from "@clerk/nextjs";
 
 const NavBar = () => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -19,6 +19,7 @@ const NavBar = () => {
     return (
         <header className="w-full shadow-md bg-gray-100 z-50 sticky top-0">
             <nav className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between md:px-8 lg:px-16 xl:px-23 2xl:px-0">
+
                 {/* Logo */}
                 <div className="flex items-center">
                     <Image
@@ -53,22 +54,30 @@ const NavBar = () => {
 
                 {/* Account + Hamburger */}
                 <div className="flex items-center gap-4 md:gap-6">
-                    {/* Account */}
+
+                    {/* Cart Icon */}
                     <div className="relative inline-block">
                         <Link href="/card">
-                        <HiShoppingCart className="text-2xl" />
-                        <span className="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full">
-                            3
+                            <HiShoppingCart className="text-2xl" />
+                            <span className="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full">
+                                3
                             </span>
                         </Link>
                     </div>
-                    <Link
-                        href="/Authentication/User"
-                        className="text-2xl flex items-center gap-1 text-gray-800 hover:text-blue-600 transition"
-                    >
-                        <FaUserCircle />
-                        <span className="text-sm hidden sm:block">Account</span>
-                    </Link>
+
+                    {/* Account Button */}
+                    <SignedOut>
+                        <SignInButton mode="modal">
+                            <button className="text-2xl cursor-pointer flex items-center gap-1 text-gray-800 hover:text-blue-600 transition">
+                                <FaUserCircle />
+                                <span className="hidden sm:block text-sm">Account</span>
+                            </button>
+                        </SignInButton>
+                    </SignedOut>
+
+                    <SignedIn>
+                        <UserButton afterSignOutUrl="/" />
+                    </SignedIn>
 
                     {/* Hamburger Button (mobile only) */}
                     <button

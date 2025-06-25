@@ -5,11 +5,11 @@ import { NextResponse } from "next/server";
 export async function POST(req) {
     try {
         await connectDB();
-        const body = await req.json();  // ✅ Await the JSON parsing
-        const address = await Adress.create(body);
-        return NextResponse.json({ status: 201, message: "Adress added successfully", address });
+        const body = await req.json();
+        const Address = await Adress.create(body)
+        return NextResponse.json({ status: 201, success: true, message: "Address added", Address })
     } catch (error) {
         console.error(error);
-        return NextResponse.json({ status: 501, message: "Server issues try again later" });
+        return NextResponse.json({ status: 500, message: "Server error, try again later" });
     }
 }

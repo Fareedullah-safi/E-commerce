@@ -28,7 +28,7 @@ const CartPage = () => {
     useEffect(() => {
         const FetchAdress = async () => {
             try {
-                const res = await axios.get("/api/Address/AdressData")
+                const res = axios.get("/api/Address/getAdress", { withCredentials: true })
                 console.log(res)
             } catch (error) {
                 console.log(error)

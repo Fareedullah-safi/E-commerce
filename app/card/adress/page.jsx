@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import addressIllustration from "@/public/images/address.svg";
@@ -6,7 +7,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
-import { useState } from "react";
+import { useUser } from "@clerk/nextjs";
 
 // Zod Schema
 const AddressSchema = z.object({
@@ -19,24 +20,34 @@ const AddressSchema = z.object({
 });
 
 export default function AddAddressForm() {
-    const { register, handleSubmit, formState: { errors }, reset } = useForm({
+    const [loading, setLoading] = useState(false);
+    const { user } = useUser()
+    const {
+        register,
+        handleSubmit,
+        reset,
+        formState: { errors },
+    } = useForm({
         resolver: zodResolver(AddressSchema),
     });
 
-    const [loading, setLoading] = useState(false);
-
     const onSubmit = async (data) => {
-        console.log(data);
         try {
             setLoading(true);
-            const res = await axios.post("/api/Address", data);
+            const Address = {
+                ...data,
+                userId: user?.id
+            }
+            console.log(Address)
+            const res = await axios.post("/api/Address", Address);
+            console.log(res)
             if (res.data.status === 201) {
-                alert("Address added successfully!");
+                alert("Address saved successfully!");
                 reset();
             }
         } catch (error) {
-            console.log(error);
-            alert("Failed to add address");
+            console.error(error);
+            alert("Failed to save address.");
         } finally {
             setLoading(false);
         }
@@ -44,7 +55,6 @@ export default function AddAddressForm() {
 
     return (
         <main className="min-h-screen bg-white flex flex-col md:flex-row items-center justify-center p-6 gap-10">
-            {/* Form Section */}
             <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -72,9 +82,9 @@ export default function AddAddressForm() {
                         <input
                             type="text"
                             {...register("PhoneNumber")}
+                            placeholder="Phone number"
                             inputMode="numeric"
                             pattern="\d*"
-                            placeholder="Phone number"
                             className="w-full border border-gray-300 rounded-md p-3 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
                         />
                         {errors.PhoneNumber && (
@@ -86,9 +96,9 @@ export default function AddAddressForm() {
                         <input
                             type="text"
                             {...register("PinCode")}
+                            placeholder="Pin code"
                             inputMode="numeric"
                             pattern="\d*"
-                            placeholder="Pin code"
                             className="w-full border border-gray-300 rounded-md p-3 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
                         />
                         {errors.PinCode && (
@@ -136,6 +146,7 @@ export default function AddAddressForm() {
                     <motion.button
                         whileHover={{ scale: 1.03 }}
                         whileTap={{ scale: 0.98 }}
+                        type="submit"
                         disabled={loading}
                         className="w-full bg-orange-600 hover:bg-orange-700 text-white py-3 rounded-md font-semibold text-sm transition disabled:opacity-50"
                     >
@@ -144,7 +155,6 @@ export default function AddAddressForm() {
                 </form>
             </motion.div>
 
-            {/* Illustration Section */}
             <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}

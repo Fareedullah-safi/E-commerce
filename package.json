@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@clerk/nextjs": "^6.23.0",
     "@coreui/react": "^5.7.0",
     "@heroui/spinner": "^2.2.18",
     "@hookform/resolvers": "^5.1.1",

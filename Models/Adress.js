@@ -6,6 +6,7 @@ const AddressSchema = mongoose.Schema({
     PinCode: Number,
     StreetAdress: String,
     CityAdress: String,
-    StateAdress: String
+    StateAdress: String,
+    userId: String
 })
 export default mongoose.models.Adress || mongoose.model('Adress', AddressSchema)
