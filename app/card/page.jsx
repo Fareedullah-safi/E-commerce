@@ -25,6 +25,22 @@ const CartPage = () => {
         };
         fetchData();
     }, []);
+    useEffect(() => {
+        const FetchAdress = async () => {
+            try {
+                const res = await axios.get("/api/Address/AdressData")
+                console.log(res)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        FetchAdress()
+    }, [])
+
+
+
+
+
 
     const handleQuantityChange = (index, amount) => {
         setProducts(prevProducts =>

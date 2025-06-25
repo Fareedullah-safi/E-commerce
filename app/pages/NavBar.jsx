@@ -55,13 +55,15 @@ const NavBar = () => {
                 <div className="flex items-center gap-4 md:gap-6">
                     {/* Account */}
                     <div className="relative inline-block">
+                        <Link href="/card">
                         <HiShoppingCart className="text-2xl" />
                         <span className="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full">
                             3
-                        </span>
+                            </span>
+                        </Link>
                     </div>
                     <Link
-                        href="/account"
+                        href="/Authentication/User"
                         className="text-2xl flex items-center gap-1 text-gray-800 hover:text-blue-600 transition"
                     >
                         <FaUserCircle />
