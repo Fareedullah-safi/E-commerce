@@ -2,7 +2,8 @@ import { Outfit } from 'next/font/google';
 import "./globals.css";
 import NavBar from './pages/NavBar';
 import Footer from './pages/Footer';
-import { ClerkProvider } from '@clerk/nextjs';
+import { Toaster } from 'react-hot-toast';
+
 const outfit = Outfit({
   variable: "--font-outfit",
   subsets: ["latin"],
@@ -15,14 +16,13 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <ClerkProvider>
     <html lang="en" className={outfit.variable}>
       <body>
           <NavBar />
           {children}
+        <Toaster position="top-right" />
           <Footer />
-        </body>
+      </body>
     </html>
-    </ClerkProvider>
-  );
+  );  
 }

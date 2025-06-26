@@ -1,19 +1,17 @@
-'use client';
-import React, { useState } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
-import { FaUserCircle, FaBars, FaTimes } from 'react-icons/fa';
+"use client";
+import React, { useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { FaUserCircle, FaBars, FaTimes } from "react-icons/fa";
 import { HiShoppingCart } from "react-icons/hi2";
-import { SignedIn, SignedOut, UserButton, SignInButton } from "@clerk/nextjs";
 
 const NavBar = () => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
     const navData = [
-        { name: 'Home', link: '/' },
-        { name: 'Shop', link: '/shop' },
-        { name: 'About Us', link: '/about' },
-        { name: 'Contact', link: '/contact' },
+        { name: "Home", link: "/" },
+        { name: "Shop", link: "/shop" },
+        { name: "About Us", link: "/about" },
+        { name: "Contact", link: "/contact" },
     ];
 
     return (
@@ -66,19 +64,13 @@ const NavBar = () => {
                     </div>
 
                     {/* Account Button */}
-                    <SignedOut>
-                        <SignInButton mode="modal">
-                            <button className="text-2xl cursor-pointer flex items-center gap-1 text-gray-800 hover:text-blue-600 transition">
+
+                    <Link href="/Authentication/Users">
+                        <button className="text-2xl cursor-pointer flex items-center gap-1 text-gray-800 hover:text-orange-600 transition">
                                 <FaUserCircle />
                                 <span className="hidden sm:block text-sm">Account</span>
                             </button>
-                        </SignInButton>
-                    </SignedOut>
-
-                    <SignedIn>
-                        <UserButton afterSignOutUrl="/" />
-                    </SignedIn>
-
+                    </Link>
                     {/* Hamburger Button (mobile only) */}
                     <button
                         className="md:hidden text-2xl text-gray-800"
@@ -97,16 +89,18 @@ const NavBar = () => {
                             <li key={index}>
                                 <Link
                                     href={item.link}
-                                    className="block text-gray-800 hover:text-blue-600 transition"
+                                    className="block text-gray-800 hover:text-orange-600 transition"
                                     onClick={() => setMobileMenuOpen(false)}
                                 >
                                     {item.name}
                                 </Link>
                             </li>
                         ))}
-                        <button className="w-full text-left text-sm border px-4 py-2 rounded-full cursor-pointer hover:border-blue-600 hover:text-blue-600 transition">
-                            Seller Dashboard
-                        </button>
+                        <Link href="/AdminProducts/AddProduct">
+                            <button className="w-full text-left text-sm border px-4 py-2 rounded-full cursor-pointer hover:border-orange-600 hover:text-orange-600 transition">
+                                Seller Dashboard
+                            </button>
+                        </Link>
                     </ul>
                 </div>
             )}

@@ -5,12 +5,14 @@ import { motion } from 'framer-motion';
 import { FaArrowLeft, FaPlus } from 'react-icons/fa';
 import Link from 'next/link';
 import axios from 'axios';
+import { currentUser } from '@clerk/nextjs/dist/types/server';
 
 const CartPage = () => {
     const [products, setProducts] = useState([]);
-
+    const user = currentUser();
     useEffect(() => {
         const fetchData = async () => {
+            console.log(user?.id)
             try {
                 const res = await axios.get("/api/addtocarddata");
                 const data = res.data.Products;
@@ -28,7 +30,7 @@ const CartPage = () => {
     useEffect(() => {
         const FetchAdress = async () => {
             try {
-                const res = axios.get("/api/Address/getAdress", { withCredentials: true })
+                const res = axios.get("/api/Address/getAdress")
                 console.log(res)
             } catch (error) {
                 console.log(error)
