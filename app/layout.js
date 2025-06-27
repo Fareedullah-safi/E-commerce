@@ -1,9 +1,16 @@
 import { Outfit } from 'next/font/google';
 import "./globals.css";
+<<<<<<< HEAD
 import NavBar from './pages/NavBar';
 import Footer from './pages/Footer';
 import { Toaster } from 'react-hot-toast';
 import AuthProvider from './pages/context/AuthContext';
+=======
+import NavBar from '@/app/(Frontend)/pages/NavBar';
+import Footer from '@/app/(Frontend)/pages/Footer';
+import { Toaster } from 'react-hot-toast';
+import AuthProvider from '@/app/(Frontend)/pages/context/AuthContext';
+>>>>>>> 7b728f6 (Initial commit)
 
 const outfit = Outfit({
   variable: "--font-outfit",
