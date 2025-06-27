@@ -23,8 +23,8 @@ export async function POST(req) {
 
         // Generate token with userId
         const token = jwt.sign({ userId: existUser._id }, process.env.JWT, { expiresIn: "7d" });
-
-        return NextResponse.json({ status: 201, message: "Login Successful", token });
+        const username = existUser.name
+        return NextResponse.json({ status: 201, message: "Login Successful", token, username });
     } catch (error) {
         console.error(error);
         return NextResponse.json({ status: 501, message: "Server issue, try again later" });
