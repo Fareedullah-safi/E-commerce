@@ -9,4 +9,4 @@ const AddressSchema = mongoose.Schema({
     StateAdress: String,
     userId: String
 })
-export default mongoose.models.Adress || mongoose.model('Adress', AddressSchema)
+export default mongoose.models.Adress || mongoose.model('Address', AddressSchema)
