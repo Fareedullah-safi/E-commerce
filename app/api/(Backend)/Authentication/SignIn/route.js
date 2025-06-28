@@ -23,7 +23,7 @@ export async function POST(req) {
         }
 
         // Generate token with userId
-        const token = jwt.sign({ userId: existUser._id }, process.env.JWT, { expiresIn: "7d" });
+        const token = jwt.sign({ id: existUser._id }, process.env.JWT, { expiresIn: "7d" });
         const username = existUser.name
 
         //SET COOKIE IN THE BROWSER 

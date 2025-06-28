@@ -1,14 +1,15 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
-
-const AddToCard = new mongoose.Schema({
-    id: Number,
+const AddToCardSchema = new mongoose.Schema({
+    id: String,
     title: String,
     description: String,
-    rating: Number,
     MarketPrice: Number,
     OurPrice: Number,
     imageUrl: String,
+    quantity: Number,
+    userId: String,
 }, { timestamps: true });
 
-export default mongoose.models.AddToCard || mongoose.model('AddToCard', AddToCard);
+const AddToCard = mongoose.models.AddToCard || mongoose.model("AddToCard", AddToCardSchema);
+export default AddToCard;

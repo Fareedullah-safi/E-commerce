@@ -22,7 +22,7 @@ export default function RootLayout({ children }) {
         <body>
           <NavBar />
           {children}
-          <Toaster position="top-right" />
+          <Toaster position="top-center" />
           <Footer />
         </body>
       </AuthProvider>

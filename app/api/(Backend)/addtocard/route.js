@@ -1,27 +1,33 @@
 import AddToCard from "@/Lib/Models/AddToCard";
 import connectDB from "@/Lib/DB/Db";
 import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
+import jwt from "jsonwebtoken";
+
+const SECRET = process.env.JWT;
 
 export async function POST(req) {
     try {
         await connectDB();
 
-        const body = await req.json();
-        const { _id } = body;
+        const { id, title, description, MarketPrice, OurPrice, imageUrl, quantity } = await req.json();
+        const token = cookies().get("token")?.value;
 
-        const existingProduct = await AddToCard.findById(_id);
+        if (!token) return NextResponse.json({ status: 401, message: "Unauthorized" });
 
-        if (existingProduct) {
-            return NextResponse.json({ status: 409, message: "Product already exists in your Cart" });
+        const { id: userId } = jwt.verify(token, SECRET);
+
+        const productExists = await AddToCard.findOne({ userId, id });
+        if (productExists) {
+            return NextResponse.json({ status: 409, message: "Product already in cart" });
         }
-        else {
-            const newProduct = await AddToCard.create(body);
 
-            return NextResponse.json({ status: 201, message: "Product added to Cart successfully", newProduct });
-        }
+        const newProduct = await AddToCard.create({ id, title, description, MarketPrice, OurPrice, imageUrl, quantity, userId });
+
+        return NextResponse.json({ status: 201, message: "Added to cart", newProduct });
 
     } catch (error) {
-        console.error("Error in AddToCart API:", error);
-        return NextResponse.json({ status: 500, message: "Internal Server Error", error: error.message });
+        console.error("AddToCart API Error:", error);
+        return NextResponse.json({ status: 500, message: "Server Error", error: error.message });
     }
 }

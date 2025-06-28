@@ -20,6 +20,7 @@ const PopularProductsPage = () => {
             try {
                 const res = await axios.get('/api/allproducts');
                 // console.log(res.data.products)
+                console.log(res)
                 setProducts(res.data.products)
             } catch (error) {
                 console.log(error);
