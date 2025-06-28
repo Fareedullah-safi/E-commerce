@@ -24,7 +24,6 @@ const CartPage = () => {
                 console.error(err);
             }
         };
-
         fetchAddress();
     }, []);
 
