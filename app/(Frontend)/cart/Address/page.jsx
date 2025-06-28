@@ -32,7 +32,7 @@ export default function AddAddressForm() {
     const onSubmit = async (data) => {
         try {
             setLoading(true);
-            console.log(Address)
+            // console.log(Address)
             const res = await axios.post("/api/Address", data);
             console.log(res)
             if (res.data.status === 201) {

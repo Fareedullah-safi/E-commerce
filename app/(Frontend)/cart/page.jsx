@@ -190,7 +190,7 @@ const CartPage = () => {
                             Select Address
                         </label>
                         <Link
-                            href="/product/cart/adress"
+                            href="/cart/Address"
                             className="mt-2 inline-flex items-center gap-2 text-sm text-orange-500 hover:text-orange-600 hover:gap-3"
                         >
                             <FaPlus className="text-xs" />
