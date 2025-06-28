@@ -8,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
 import { AuthContext } from "@/app/(Frontend)/pages/context/AuthContext";
 import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 
 const SignUpSchema = z.object({
     name: z.string().min(2, "Name must be at least 2 characters"),
@@ -41,11 +42,13 @@ export default function AuthForm() {
                 localStorage.setItem("user", JSON.stringify(res.data.createdUser));
                 const status = await res.data.status;
                 const username = await res.data.createdUser
+                console.log(username)
                 if (status === 201) {
                     toast.success("Account Created");
                     route.push("/")
+                    Cookies.set("username", username.name, { expires: 7 }); // expires in 7 days
                     setUser(res.data.createdUser)
-                    localStorage.setItem('name', username.name)
+                    // localStorage.setItem('name', username.name)
                 } else if (status === 409) {
                     toast.error("Email already exists");
                 } else if (status === 501) {
@@ -57,11 +60,13 @@ export default function AuthForm() {
                 const res = await axios.post("/api/Authentication/SignIn", data);
                 const status = await res.data.status;
                 const username = await res.data
+                console.log(username)
                 if (status === 201) {
                     toast.success("Login Successful");
                     route.push("/")
+                    Cookies.set("username", username.username, { expires: 7 }); // expires in 7 days
                     setUser(res.data)
-                    localStorage.setItem('name', username.username)
+                    // localStorage.setItem('name', username.username)
                 } else if (status === 401) {
                     toast.error("Invalid email or password");
                 } else if (status === 501) {

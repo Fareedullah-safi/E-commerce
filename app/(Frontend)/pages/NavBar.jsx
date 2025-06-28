@@ -1,13 +1,14 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { FaUserCircle, FaBars, FaTimes } from "react-icons/fa";
 import { HiShoppingCart } from "react-icons/hi2";
 import toast from "react-hot-toast";
 import MiniWhiteSpinner from '@/Lib/Components/MiniWhiteSpinner';
 import { useRouter } from "next/navigation";
 import { AuthContext } from "@/app/(Frontend)/pages/context/AuthContext";
+import Cookies from "js-cookie";
 import axios from "axios";
 
 const NavBar = () => {
@@ -24,11 +25,11 @@ const NavBar = () => {
     ];
 
     const handleLogout = async () => {
-        setLoading(true)
-        const res = await axios.post("/api/Authentication/Signout")
-        const status = res.data.status
+        setLoading(true);
+        const res = await axios.post("/api/Authentication/Signout");
+        const status = res.data.status;
         if (status === 200) {
-            localStorage.removeItem("user");
+            Cookies.remove("username");
             setUser(null);
             setTimeout(() => {
                 toast.success("Logged out successfully");
@@ -76,7 +77,7 @@ const NavBar = () => {
 
                     {/* Cart Icon */}
                     <div className="relative">
-                        <Link href="/product/cart">
+                        <Link href="/cart">
                             <HiShoppingCart className="text-2xl" />
                             <span className="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full">
                                 3
@@ -88,8 +89,8 @@ const NavBar = () => {
                     {user ? (
                         <div className="flex items-center gap-2 text-gray-800">
                             <FaUserCircle className="text-xl text-orange-500" />
-                            <span className="hidden sm:block text-sm font-medium">
-                                Hi, {user.name || user.username}
+                            <span className="text-sm font-medium">
+                                Hi, {user.name}
                             </span>
                             <button
                                 onClick={handleLogout}
@@ -138,18 +139,6 @@ const NavBar = () => {
                                 Seller Dashboard
                             </button>
                         </Link>
-                        {user && (
-                            <button
-                                onClick={() => {
-                                    setMobileMenuOpen(false);
-                                    handleLogout();
-                                }}
-                                className="w-full text-left text-sm border px-4 py-2 rounded-full hover:border-orange-600 hover:text-orange-600 transition flex items-center gap-2"
-                                disabled={loading}
-                            >
-                                {loading ? <MiniWhiteSpinner /> : "Logout"}
-                            </button>
-                        )}
                     </ul>
                 </div>
             )}

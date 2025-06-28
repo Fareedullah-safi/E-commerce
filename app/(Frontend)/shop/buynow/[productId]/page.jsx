@@ -4,7 +4,7 @@ import { useParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { FaStar } from 'react-icons/fa';
 import axios from 'axios';
-import Spinner from '@/Components/Spinner';
+import Spinner from '@/Lib/Components/Spinner';
 import toast, { Toaster } from 'react-hot-toast';
 import Link from 'next/link';
 

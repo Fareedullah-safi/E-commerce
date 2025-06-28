@@ -15,12 +15,11 @@ const PopularProductsPage = () => {
             [id]: !prevFavorites[id]
         }));
     };
-
     useEffect(() => {
         const fetchProducts = async () => {
             try {
                 const res = await axios.get('/api/allproducts');
-                console.log(res.data.products)
+                // console.log(res.data.products)
                 setProducts(res.data.products)
             } catch (error) {
                 console.log(error);
