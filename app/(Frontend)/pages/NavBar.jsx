@@ -16,28 +16,25 @@ const NavBar = () => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     const router = useRouter();
-
     const navData = [
         { name: "Home", link: "/" },
         { name: "Shop", link: "/shop" },
         { name: "About Us", link: "/about" },
         { name: "Contact", link: "/contact" },
     ];
-
     const handleLogout = async () => {
         setLoading(true);
         const res = await axios.post("/api/Authentication/Signout");
         const status = res.data.status;
         if (status === 200) {
-            localStorage.removeItem("username")
-            Cookies.remove("username");
+            // localStorage.removeItem("username")
+            // Cookies.remove("username");
             setUser(null);
             toast.success("Logged out successfully");
             setLoading(false);
             router.push("/");
         }
     };
-
     return (
         <header className="w-full shadow-md bg-gray-100 z-50 sticky top-0">
             <nav className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between md:px-8 lg:px-16 xl:px-23 2xl:px-0">
@@ -89,7 +86,7 @@ const NavBar = () => {
                         <div className="flex items-center gap-2 text-gray-800">
                             <FaUserCircle className="text-xl text-orange-500" />
                             <span className="text-sm font-medium">
-                                Hi, {user.name}
+                                Hi, {user}
                             </span>
                             <button
                                 onClick={handleLogout}

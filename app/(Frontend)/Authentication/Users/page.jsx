@@ -40,15 +40,14 @@ export default function AuthForm() {
             if (isSignUp) {
                 const res = await axios.post("/api/Authentication/SignUp", data);
                 const status = await res.data.status;
-                const username = await res.data.createdUser
-                console.log(username)
+                const username = res.data.createdUser.name
+                // console.log(username)
+                console.log(res.data)
                 if (status === 201) {
                     toast.success("Account Created");
+                    Cookies.set("username", username, { expires: 7 }); // expires in 7 days
+                    setUser(res.data.createdUser.name)
                     route.push("/")
-                    localStorage.setItem("username", username.name)
-                    Cookies.set("username", username.name, { expires: 7 }); // expires in 7 days
-                    setUser(res.data.createdUser)
-                    // localStorage.setItem('name', username.name)
                 } else if (status === 409) {
                     toast.error("Email already exists");
                 } else if (status === 501) {
@@ -59,14 +58,12 @@ export default function AuthForm() {
             } else {
                 const res = await axios.post("/api/Authentication/SignIn", data);
                 const status = await res.data.status;
-                const username = await res.data
-                console.log(username)
+                const username = await res.data.username
                 if (status === 201) {
                     toast.success("Login Successful");
+                    setUser(res.data.username)
+                    Cookies.set("username", username, { expires: 7 }); // expires in 7 days
                     route.push("/")
-                    localStorage.setItem("username", username.name)
-                    Cookies.set("username", username.username, { expires: 7 }); // expires in 7 days
-                    setUser(res.data)
                 } else if (status === 401) {
                     toast.error("Invalid email or password");
                 } else if (status === 501) {

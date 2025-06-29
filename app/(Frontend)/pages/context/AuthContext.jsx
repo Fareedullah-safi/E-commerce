@@ -6,14 +6,10 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
-
     useEffect(() => {
-        const username = Cookies.get("username");
-        if (username) {
-            setUser({ name: username });
-        }
-    }, [2]);
-
+        const username = Cookies.get("username")
+        setUser(user || username)
+    }, [])
     return (
         <AuthContext.Provider value={{ user, setUser }}>
             {children}
