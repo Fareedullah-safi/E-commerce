@@ -8,11 +8,7 @@ import { FaArrowRight } from 'react-icons/fa';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import Link from 'next/link';
-<<<<<<< HEAD
 import toast from 'react-hot-toast';
-=======
-import toast, { Toaster } from 'react-hot-toast';
->>>>>>> 7b728f6ff62b35013b076f83e30b67153cd125ef
 
 const slides = [
     {
@@ -37,11 +33,7 @@ const slides = [
         subtitle: 'Hurry Up – 40% Off Only Today!',
         button: 'Shop now',
         linkText: 'Explore',
-<<<<<<< HEAD
         image: '/images/Headphone.png'
-=======
-        image: '/images/Headphone.png',
->>>>>>> 7b728f6ff62b35013b076f83e30b67153cd125ef
     },
 ];
 const buyme = () => {
@@ -51,10 +43,6 @@ const HeroSlider = () => {
 
     return (
         <div className="px-3 xs:px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24 2xl:px-32 py-4 sm:py-6 md:py-8 lg:py-10">
-<<<<<<< HEAD
-=======
-            <Toaster position='top-right' reverseOrder={false} />
->>>>>>> 7b728f6ff62b35013b076f83e30b67153cd125ef
             <Swiper
                 modules={[Autoplay, Pagination]}
                 autoplay={{ delay: 3000 }}

@@ -6,11 +6,7 @@ import Link from 'next/link';
 import products from "@/Lib/Json/Card.json";
 import { FaArrowRight } from 'react-icons/fa';
 import MiniWhiteSpinner from '@/Lib/Components/MiniWhiteSpinner';
-<<<<<<< HEAD
 import toast from 'react-hot-toast';
-=======
-import toast, { Toaster } from 'react-hot-toast';
->>>>>>> 7b728f6ff62b35013b076f83e30b67153cd125ef
 
 const ProductShowcase = () => {
     const [favorites, setFavorites] = useState({});
@@ -31,11 +27,6 @@ const ProductShowcase = () => {
 
     return (
         <main>
-<<<<<<< HEAD
-=======
-            <Toaster position="top-right" reverseOrder={false} />
-
->>>>>>> 7b728f6ff62b35013b076f83e30b67153cd125ef
             <h1 className="text-2xl md:text-3xl font-semibold pt-10 pb-4 px-4 md:px-8 lg:px-16 xl:px-24 2xl:px-32">
                 Popular Products
             </h1>
