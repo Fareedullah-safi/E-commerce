@@ -8,7 +8,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
 import { AuthContext } from "@/app/(Frontend)/pages/context/AuthContext";
 import { useRouter } from "next/navigation";
+<<<<<<< HEAD
 import Cookies from "js-cookie";
+=======
+>>>>>>> 7b728f6ff62b35013b076f83e30b67153cd125ef
 
 const SignUpSchema = z.object({
     name: z.string().min(2, "Name must be at least 2 characters"),
@@ -39,6 +42,7 @@ export default function AuthForm() {
         try {
             if (isSignUp) {
                 const res = await axios.post("/api/Authentication/SignUp", data);
+<<<<<<< HEAD
                 const status = await res.data.status;
                 const username = res.data.createdUser.name
                 // console.log(username)
@@ -48,6 +52,16 @@ export default function AuthForm() {
                     Cookies.set("username", username, { expires: 7 }); // expires in 7 days
                     setUser(res.data.createdUser.name)
                     route.push("/")
+=======
+                localStorage.setItem("user", JSON.stringify(res.data.createdUser));
+                const status = await res.data.status;
+                const username = await res.data.createdUser
+                if (status === 201) {
+                    toast.success("Account Created");
+                    route.push("/")
+                    setUser(res.data.createdUser)
+                    localStorage.setItem('name', username.name)
+>>>>>>> 7b728f6ff62b35013b076f83e30b67153cd125ef
                 } else if (status === 409) {
                     toast.error("Email already exists");
                 } else if (status === 501) {
@@ -58,12 +72,21 @@ export default function AuthForm() {
             } else {
                 const res = await axios.post("/api/Authentication/SignIn", data);
                 const status = await res.data.status;
+<<<<<<< HEAD
                 const username = await res.data.username
                 if (status === 201) {
                     toast.success("Login Successful");
                     setUser(res.data.username)
                     Cookies.set("username", username, { expires: 7 }); // expires in 7 days
                     route.push("/")
+=======
+                const username = await res.data
+                if (status === 201) {
+                    toast.success("Login Successful");
+                    route.push("/")
+                    setUser(res.data)
+                    localStorage.setItem('name', username.username)
+>>>>>>> 7b728f6ff62b35013b076f83e30b67153cd125ef
                 } else if (status === 401) {
                     toast.error("Invalid email or password");
                 } else if (status === 501) {

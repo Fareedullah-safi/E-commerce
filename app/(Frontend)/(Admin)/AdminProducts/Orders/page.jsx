@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import SideBar from '@/Lib/Components/SideBar';
+=======
+import SideBar from '@/Components/SideBar'
+>>>>>>> 7b728f6ff62b35013b076f83e30b67153cd125ef
 import React from 'react'
 
 const page = () => {

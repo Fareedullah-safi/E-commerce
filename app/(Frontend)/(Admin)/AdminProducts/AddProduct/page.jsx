@@ -1,7 +1,11 @@
 'use client';
 
 import React, { useState } from 'react';
+<<<<<<< HEAD
 import SideBar from '@/Lib/Components/SideBar';
+=======
+import SideBar from '@/Components/SideBar';
+>>>>>>> 7b728f6ff62b35013b076f83e30b67153cd125ef
 import axios from 'axios';
 import { z } from 'zod';
 import { toast, Toaster } from 'react-hot-toast';

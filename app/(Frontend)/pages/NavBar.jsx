@@ -1,14 +1,21 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
+<<<<<<< HEAD
 import React, { useState, useContext, useEffect } from "react";
+=======
+import React, { useState, useContext } from "react";
+>>>>>>> 7b728f6ff62b35013b076f83e30b67153cd125ef
 import { FaUserCircle, FaBars, FaTimes } from "react-icons/fa";
 import { HiShoppingCart } from "react-icons/hi2";
 import toast from "react-hot-toast";
 import MiniWhiteSpinner from '@/Lib/Components/MiniWhiteSpinner';
 import { useRouter } from "next/navigation";
 import { AuthContext } from "@/app/(Frontend)/pages/context/AuthContext";
+<<<<<<< HEAD
 import Cookies from "js-cookie";
+=======
+>>>>>>> 7b728f6ff62b35013b076f83e30b67153cd125ef
 import axios from "axios";
 
 const NavBar = () => {
@@ -16,12 +23,17 @@ const NavBar = () => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     const router = useRouter();
+<<<<<<< HEAD
+=======
+
+>>>>>>> 7b728f6ff62b35013b076f83e30b67153cd125ef
     const navData = [
         { name: "Home", link: "/" },
         { name: "Shop", link: "/shop" },
         { name: "About Us", link: "/about" },
         { name: "Contact", link: "/contact" },
     ];
+<<<<<<< HEAD
     const handleLogout = async () => {
         setLoading(true);
         const res = await axios.post("/api/Authentication/Signout");
@@ -31,10 +43,27 @@ const NavBar = () => {
             // Cookies.remove("username");
             setUser(null);
             toast.success("Logged out successfully");
+=======
+
+    const handleLogout = async () => {
+        setLoading(true)
+        const res = await axios.post("/api/Authentication/Signout")
+        const status = res.data.status
+        if (status === 200) {
+            localStorage.removeItem("user");
+            setUser(null);
+            setTimeout(() => {
+                toast.success("Logged out successfully");
+            }, 1);
+>>>>>>> 7b728f6ff62b35013b076f83e30b67153cd125ef
             setLoading(false);
             router.push("/");
         }
     };
+<<<<<<< HEAD
+=======
+
+>>>>>>> 7b728f6ff62b35013b076f83e30b67153cd125ef
     return (
         <header className="w-full shadow-md bg-gray-100 z-50 sticky top-0">
             <nav className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between md:px-8 lg:px-16 xl:px-23 2xl:px-0">
@@ -73,7 +102,11 @@ const NavBar = () => {
 
                     {/* Cart Icon */}
                     <div className="relative">
+<<<<<<< HEAD
                         <Link href="/cart">
+=======
+                        <Link href="/product/cart">
+>>>>>>> 7b728f6ff62b35013b076f83e30b67153cd125ef
                             <HiShoppingCart className="text-2xl" />
                             <span className="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full">
                                 3
@@ -85,8 +118,13 @@ const NavBar = () => {
                     {user ? (
                         <div className="flex items-center gap-2 text-gray-800">
                             <FaUserCircle className="text-xl text-orange-500" />
+<<<<<<< HEAD
                             <span className="text-sm font-medium">
                                 Hi, {user}
+=======
+                            <span className="hidden sm:block text-sm font-medium">
+                                Hi, {user.name || user.username}
+>>>>>>> 7b728f6ff62b35013b076f83e30b67153cd125ef
                             </span>
                             <button
                                 onClick={handleLogout}
@@ -135,6 +173,21 @@ const NavBar = () => {
                                 Seller Dashboard
                             </button>
                         </Link>
+<<<<<<< HEAD
+=======
+                        {user && (
+                            <button
+                                onClick={() => {
+                                    setMobileMenuOpen(false);
+                                    handleLogout();
+                                }}
+                                className="w-full text-left text-sm border px-4 py-2 rounded-full hover:border-orange-600 hover:text-orange-600 transition flex items-center gap-2"
+                                disabled={loading}
+                            >
+                                {loading ? <MiniWhiteSpinner /> : "Logout"}
+                            </button>
+                        )}
+>>>>>>> 7b728f6ff62b35013b076f83e30b67153cd125ef
                     </ul>
                 </div>
             )}
