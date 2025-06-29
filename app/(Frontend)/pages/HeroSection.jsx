@@ -33,7 +33,7 @@ const slides = [
         subtitle: 'Hurry Up – 40% Off Only Today!',
         button: 'Shop now',
         linkText: 'Explore',
-        image: '/images/Headphone.png',
+        image: '/images/Headphone.png'
     },
 ];
 const buyme = () => {
