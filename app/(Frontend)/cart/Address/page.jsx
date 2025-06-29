@@ -1,17 +1,21 @@
 "use client";
+
 import { useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import addressIllustration from "@/public/images/address.svg";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
+import toast from "react-hot-toast";
 
 // Zod Schema
 const AddressSchema = z.object({
     userName: z.string().min(3, "Full name is required"),
-    PhoneNumber: z.string().regex(/^\d{10,15}$/, "Phone number must be 10-15 digits"),
+    PhoneNumber: z.string().min(10, "Phone number must be at least 10 digits"),
     PinCode: z.string().regex(/^\d{4,8}$/, "Pin code must be 4-8 digits"),
     StreetAdress: z.string().min(5, "Street Address is required"),
     CityAdress: z.string().min(2, "City is required"),
@@ -24,24 +28,27 @@ export default function AddAddressForm() {
         register,
         handleSubmit,
         reset,
+        control,
         formState: { errors },
     } = useForm({
         resolver: zodResolver(AddressSchema),
+        defaultValues: {
+            PhoneNumber: "",
+        },
     });
 
     const onSubmit = async (data) => {
         try {
             setLoading(true);
-            // console.log(Address)
             const res = await axios.post("/api/Address", data);
             console.log(res)
             if (res.data.status === 201) {
-                alert("Address saved successfully!");
+                toast.success("Address saved successfully!");
                 reset();
             }
         } catch (error) {
             console.error(error);
-            alert("Failed to save address.");
+            toast.error("Failed to save address.");
         } finally {
             setLoading(false);
         }
@@ -60,6 +67,7 @@ export default function AddAddressForm() {
                 </h1>
 
                 <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
+                    {/* Name */}
                     <div>
                         <input
                             type="text"
@@ -72,20 +80,29 @@ export default function AddAddressForm() {
                         )}
                     </div>
 
+                    {/* Phone */}
                     <div>
-                        <input
-                            type="text"
-                            {...register("PhoneNumber")}
-                            placeholder="Phone number"
-                            inputMode="numeric"
-                            pattern="\d*"
-                            className="w-full border border-gray-300 rounded-md p-3 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
+                        <Controller
+                            name="PhoneNumber"
+                            control={control}
+                            render={({ field }) => (
+                                <PhoneInput
+                                    {...field}
+                                    country={"pk"}
+                                    value={field.value}
+                                    onChange={(value) => field.onChange(value)}
+                                    inputClass="!w-full !h-10 !text-base !pl-12"
+                                    containerClass="!w-full"
+                                    buttonClass="!h-10"
+                                />
+                            )}
                         />
                         {errors.PhoneNumber && (
                             <p className="text-red-500 text-xs mt-1">{errors.PhoneNumber.message}</p>
                         )}
                     </div>
 
+                    {/* Pin Code */}
                     <div>
                         <input
                             type="text"
@@ -100,6 +117,7 @@ export default function AddAddressForm() {
                         )}
                     </div>
 
+                    {/* Address */}
                     <div>
                         <textarea
                             {...register("StreetAdress")}
@@ -111,6 +129,7 @@ export default function AddAddressForm() {
                         )}
                     </div>
 
+                    {/* City & State */}
                     <div className="flex gap-4">
                         <div className="flex-1">
                             <input
@@ -137,6 +156,7 @@ export default function AddAddressForm() {
                         </div>
                     </div>
 
+                    {/* Submit */}
                     <motion.button
                         whileHover={{ scale: 1.03 }}
                         whileTap={{ scale: 0.98 }}
@@ -149,6 +169,7 @@ export default function AddAddressForm() {
                 </form>
             </motion.div>
 
+            {/* Image */}
             <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}

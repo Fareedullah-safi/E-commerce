@@ -3,7 +3,7 @@
 import MiniWhiteSpinner from '@/Lib/Components/MiniWhiteSpinner';
 import Link from 'next/link';
 import React, { useState } from 'react';
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 import { FaCartArrowDown } from "react-icons/fa";
 import { SiProducthunt } from "react-icons/si";
 
@@ -45,8 +45,6 @@ const FeaturedProducts = () => {
 
     return (
         <main>
-            {/* 🟡 Toast container must be added once */}
-            <Toaster position="top-right" reverseOrder={false} />
 
             <h1 className="text-2xl md:text-3xl font-semibold pt-10 pb-4 px-4 md:px-8 lg:px-16 xl:px-24 2xl:px-32">
                 Popular products

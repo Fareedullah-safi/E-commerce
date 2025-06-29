@@ -39,13 +39,13 @@ export default function AuthForm() {
         try {
             if (isSignUp) {
                 const res = await axios.post("/api/Authentication/SignUp", data);
-                localStorage.setItem("user", JSON.stringify(res.data.createdUser));
                 const status = await res.data.status;
                 const username = await res.data.createdUser
                 console.log(username)
                 if (status === 201) {
                     toast.success("Account Created");
                     route.push("/")
+                    localStorage.setItem("username", username.name)
                     Cookies.set("username", username.name, { expires: 7 }); // expires in 7 days
                     setUser(res.data.createdUser)
                     // localStorage.setItem('name', username.name)
@@ -64,9 +64,9 @@ export default function AuthForm() {
                 if (status === 201) {
                     toast.success("Login Successful");
                     route.push("/")
+                    localStorage.setItem("username", username.name)
                     Cookies.set("username", username.username, { expires: 7 }); // expires in 7 days
                     setUser(res.data)
-                    // localStorage.setItem('name', username.username)
                 } else if (status === 401) {
                     toast.error("Invalid email or password");
                 } else if (status === 501) {

@@ -29,11 +29,10 @@ const NavBar = () => {
         const res = await axios.post("/api/Authentication/Signout");
         const status = res.data.status;
         if (status === 200) {
+            localStorage.removeItem("username")
             Cookies.remove("username");
             setUser(null);
-            setTimeout(() => {
-                toast.success("Logged out successfully");
-            }, 1);
+            toast.success("Logged out successfully");
             setLoading(false);
             router.push("/");
         }

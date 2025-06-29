@@ -24,9 +24,8 @@ export async function POST(req) {
         const updatedAddress = await Adress.findOneAndUpdate(
             { userId },
             { ...body },
-            { new: true, upsert: true } // upsert = create if not found
+            { new: true, upsert: true }, // upsert = create if not found
         );
-
         return NextResponse.json({
             status: 201,
             success: true,

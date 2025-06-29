@@ -90,6 +90,8 @@ const CartPage = () => {
     const tax = subtotal * 0.02;
     const total = subtotal + tax;
 
+
+
     return (
         <main className="bg-gray-50 min-h-screen py-6 px-4 md:px-12 lg:px-24">
             <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-8">
@@ -106,7 +108,7 @@ const CartPage = () => {
                     ) : (
                             <div>
                                 <div className="hidden sm:grid grid-cols-4 gap-4 text-sm font-semibold text-gray-600 border-b pb-3">
-                                    <span>Product</span>
+                                <span>Product</span>
                                 <span>Price</span>
                                 <span>Quantity</span>
                                 <span>Subtotal</span>

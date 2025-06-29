@@ -9,10 +9,10 @@ export const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         const username = Cookies.get("username");
-        if (username || name) {
+        if (username) {
             setUser({ name: username });
         }
-    }, []);
+    }, [2]);
 
     return (
         <AuthContext.Provider value={{ user, setUser }}>
